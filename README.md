@@ -1,7 +1,7 @@
 # Opencore-EFI-for-Gigabyte-H310M-S2-2.0-with-RX-550
 
 EFI folder for running macOS on Gigabyte H310M S2 2.0 motherboard paired with AMD Radeon RX 550 (Lexa, patched).
-This repository provides a working OpenCore EFI setup for Hackintosh enthusiasts.
+Dualboot with Windows 11
 
 📋 Specifications
 
