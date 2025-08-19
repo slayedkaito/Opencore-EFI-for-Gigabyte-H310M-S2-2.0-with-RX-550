@@ -1,0 +1,1 @@
+# Opencore-EFI-for-Gigabyte-H310M-S2-2.0-with-RX-550
