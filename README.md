@@ -1,99 +1,94 @@
-# Opencore-EFI-for-Gigabyte-H310M-S2-2.0-with-RX-550
+# 🍏 Hackintosh EFI - macOS Ventura on H310M S2 2.0 + RX550 + i5-8400
 
-EFI folder for running macOS on Gigabyte H310M S2 2.0 motherboard paired with AMD Radeon RX 550 (Lexa, patched).
-Dualboot with Windows 11
+⚠️ This EFI was tested on **macOS Ventura 13.x** and may need adjustments for newer or older versions.  
+Last working config before Hackintosh support started declining on Intel systems (post macOS 26 "Tahoe").
 
-📋 Specifications
+---
 
-Hardware tested:
+## 🧠 Specs
 
-Motherboard: Gigabyte H310M S2 2.0
+| Component       | Model                            |
+|----------------|-----------------------------------|
+| Motherboard     | Gigabyte H310M S2 2.0              |
+| Processor       | Intel Core i5-8400 (UHD 630 iGPU)  |
+| Graphics        | AMD RX 550 2GB (Lexa core)         |
+| RAM             | 16GB DDR4                          |
+| Storage         | SSD 120GB (Windows), HDD 500GB (macOS) |
+| Network         | USB WiFi 802.11n                   |
+| Bootloader      | OpenCore 0.9.x                     |
 
-CPU: Intel Core i3/i5/i7 8th/9th Gen (Coffee Lake)
+---
 
-iGPU: Intel UHD Graphics 630 (disabled, using dGPU)
+## 🧩 What Works
 
-dGPU: AMD Radeon RX 550 Lexa (patched to work on macOS)
+✅ Boot to macOS Ventura  
+✅ USB Ports (after mapping via Hackintool)  
+✅ Graphics acceleration (after RX550 patch)  
+✅ Dual boot with Windows 11  
+✅ Audio (after AppleALC and layout injection)  
+✅ USB WiFi (some chipsets)  
+✅ LAN Internet (tested via LAN-to-LAN from laptop)
 
-RAM: DDR4 16GB (2×8GB)
+---
 
-Storage: SATA SSD / HDD
+## ❌ What Doesn’t Work
 
-Audio: Realtek ALC887
+🚫 Native WiFi (no supported chip)  
+🚫 iGPU acceleration (not used — RX550 only)  
+🚫 USB tethering (unless patched with HoRNDIS)  
+🚫 Bluetooth (no compatible device)  
+🚫 AirDrop, Handoff, etc (no native Broadcom)
 
-Ethernet: Realtek RTL8111
+---
 
-Software:
+## 🔧 Setup Notes
 
-Bootloader: OpenCore
+- BIOS settings:
+  - VT-d: Disabled
+  - Secure Boot: Disabled
+  - Above 4G Decoding: Enabled
+  - OS Type: Other OS
+  - XHCI Handoff: Enabled
+  - Serial Port: Disabled
 
-macOS Version Tested: Ventura
+- GPU Patch (RX550 Lexa):
+  - `WhateverGreen.kext` + `agdpmod=pikera` boot arg
+  - No iGPU injection needed
+  - `Display` will show 7MB until fixed
 
-✅ Working
+- SMBIOS: `iMac19,1`
+- OpenCore Picker: Enabled
+- Boot entry preserved using `bootmgfw.efi` trick
 
-Boot macOS installer and system
+---
 
-RX 550 2Gb (Lexa) fully accelerated with patch (spoofed to RX550 Baffin)
+## 📦 Kexts Used
 
-Audio output (ALC887 with AppleALC)
+- `Lilu.kext`
+- `WhateverGreen.kext`
+- `AppleALC.kext`
+- `USBInjectAll.kext` / or custom USBMap.kext
+- `VirtualSMC.kext`
+- `SMCProcessor.kext`
+- `SMCBatteryManager.kext` (optional)
+- `RealtekRTL8111.kext` (if using onboard LAN)
 
-Ethernet (RTL8111 with RealtekRTL8111.kext)
+---
 
-USB ports (with USB map)
+## 🪛 Tips
 
-Shutdown / Restart / Sleep
+- If OpenCore not showing in BIOS, use fallback `BOOTx64.efi` or rename `bootmgfw.efi` (replace original bootmgfw with the opencore bootx64.efi(rename to bootmgfw.efi)
+- Windows won’t show in OpenCore if NVRAM broken → Reset NVRAM at boot
+- Avoid Windows Update overwriting EFI
+- Use **OCAuxiliaryTools** on macOS or **EasyUEFI** on Windows to manage entries (replace opencore bootmgfw with the original one)
+- Don’t forget to backup your EFI folder!
 
-⚠️ Not Working / Notes
+---
 
-Intel iGPU disabled (not needed, RX 550 used as primary)
+## 📝 Credits
 
-DRM content (Apple TV+, Netflix in Safari) may not work
+- OpenCore Team
+- Dortania Guide (https://dortania.github.io/)
+- Reddit r/Hackintosh
+- And me, Kaito (@amia4k60 on tiktok)
 
-Always generate your own SMBIOS (don’t use the included one!)
-
-📂 Folder Structure
-EFI/
-├── BOOT
-│   └── BOOTx64.efi
-└── OC
-    ├── ACPI
-    ├── Drivers
-    ├── Kexts
-    ├── OpenCore.efi
-    ├── config.plist
-    └── Resources
-
-🔧 Installation
-
-Prepare USB with macOS installer (use gibMacOS
- or macrecovery.py
-).
-
-Copy this EFI folder into EFI partition.
-
-Edit config.plist with ProperTree
-.
-
-Set your SMBIOS (recommend: iMac19,1 for Coffee Lake).
-
-Adjust Serial Number, Board Serial, MLB, and UUID with GenSMBIOS
-.
-
-Boot macOS installer and install macOS.
-
-After successful installation, mount system disk’s EFI and copy EFI folder from USB to system disk.
-
-📖 References
-
-OpenCore Install Guide
-
-WhateverGreen
-
-AppleALC
-
-RealtekRTL8111
-
-⚡ Disclaimer
-
-This EFI is provided as-is. Use at your own risk.
-Always generate your own SMBIOS and make necessary adjustments according to your hardware.
